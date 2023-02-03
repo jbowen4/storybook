@@ -20,7 +20,6 @@ const baseURL = "https://1hp4qvie0k.execute-api.us-east-1.amazonaws.com/producti
 let testing_img = false;
 
 function StandardImageList({images, handleChosen, chosen}) {
-  console.log('images', images)
   let rowImages = []
   for(let setIndex in images) {
     if (!images.hasOwnProperty(setIndex)) {
@@ -40,8 +39,6 @@ function StandardImageList({images, handleChosen, chosen}) {
       })
     }
   }
-
-  console.log(chosen)
 
   return (
       <ImageList cols={2} >
@@ -70,13 +67,14 @@ function App() {
   const [body, setBody] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
-  const [scenes, setScenes] = useState([
-    "The 3-head creepy creature attacked the small American village with no mercy. Everyone was running for their lives, but nobody could escape {monster growl}. People were screaming for help, but no one could hear them {male scream}. Everyone was so scared, their hearts were beating like crazy {heartbeat}. In a matter of minutes, the creature ate everyone in the village {glass smash}.",
-  "The survivors were left in shock and disbelief. They were too afraid to go back, so they just stayed and watched from a distance as the creature was eating their loved ones {church bell}. It was a nightmare that seemed to last forever {squeak}.",
-  "The creature finally left the village, leaving behind a trail of destruction and despair {thunder}. The villagers will never forget the terror they experienced, and the dark night will always haunt their dreams {wind}.",
-
-
-]);
+  const [scenes, setScenes] = useState();
+  //[
+  //     "The 3-head creepy creature attacked the small American village with no mercy. Everyone was running for their lives, but nobody could escape {monster growl}. People were screaming for help, but no one could hear them {male scream}. Everyone was so scared, their hearts were beating like crazy {heartbeat}. In a matter of minutes, the creature ate everyone in the village {glass smash}.",
+  //   "The survivors were left in shock and disbelief. They were too afraid to go back, so they just stayed and watched from a distance as the creature was eating their loved ones {church bell}. It was a nightmare that seemed to last forever {squeak}.",
+  //   "The creature finally left the village, leaving behind a trail of destruction and despair {thunder}. The villagers will never forget the terror they experienced, and the dark night will always haunt their dreams {wind}.",
+  //
+  //
+  // ]
   const [chosen, setChosen] = useState([
       [1, 0],
         [1, 0],
@@ -96,8 +94,6 @@ function App() {
   // ]]
   const [images, setImages] = useState();
   const [video, setVideo] = useState();
-
-  console.log('chosen global', chosen)
 
   async function handleGenerateVideo() {
     let requestScenes = []
@@ -151,40 +147,29 @@ function App() {
         rows[i].push(chosen[i][j])
       }
     }
-    // let newChosen = chosen
-    // newChosen[set] = object.chosenRow
-
-    console.log('going to set chosen', rows)
 
     setChosen(rows)
   }
 
-  const getVideo = async () => {
-    //{”scenes”: [{”scene”: “text of scene”, “image”: “image for scene”}]}
-    const res = await fetch(`${baseURL}/api/v1/video`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        scenes: [
-          { scene: scenes[0], image: images[0] },
-          { scene: scenes[1], image: images[1] },
-          { scene: scenes[2], image: images[2] },
-        ],
-      }),
-    });
-
-    const results = await res.json();
-
-    setVideo(results['video']);
-  };
-
   const getImages = async () => {
     setLoadingImages(true);
     try {
+      // first, we need to generate image_scripts, after that push them one by one to get images
+      // just because of fast made api, it has 30 second timeout and cannot be changed
+      const resScripts = await fetch(`${baseURL}/api/v1/image_scripts`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          scenes: scenes,
+        }),
+      });
+      const scripts = await resScripts.json();
+      console.log('scripts', scripts);
+
       let imageSets = []
       for(let i = 0; i < 2; i++) {
         const res = await fetch(`${baseURL}/api/v1/images`, {
@@ -195,7 +180,7 @@ function App() {
           },
           method: 'POST',
           body: JSON.stringify({
-            scenes: scenes,
+            scenes: scripts['scripts'],
           }),
         });
         const results = await res.json();
