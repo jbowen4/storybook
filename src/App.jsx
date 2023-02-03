@@ -67,7 +67,7 @@ function App() {
   const [body, setBody] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
-  const [scenes, setScenes] = useState();
+  const [scenes, setScenes] = useState([]);
   //[
   //     "The 3-head creepy creature attacked the small American village with no mercy. Everyone was running for their lives, but nobody could escape {monster growl}. People were screaming for help, but no one could hear them {male scream}. Everyone was so scared, their hearts were beating like crazy {heartbeat}. In a matter of minutes, the creature ate everyone in the village {glass smash}.",
   //   "The survivors were left in shock and disbelief. They were too afraid to go back, so they just stayed and watched from a distance as the creature was eating their loved ones {church bell}. It was a nightmare that seemed to last forever {squeak}.",
