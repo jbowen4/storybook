@@ -1,23 +1,26 @@
 import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
 import './App.css';
 import  TextField from "@mui/material/TextField";
-import  FormControl from "@mui/material/FormControl";
-import  InputLabel from "@mui/material/InputLabel";
-import  Select from "@mui/material/Select";
-import  FormControlLabel from "@mui/material/FormControlLabel";
-import  Button from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import Grid from '@mui/material/Unstable_Grid2';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 
 import Lottie from 'lottie-react';
 import wizardAnimation from './assets/wizard.json';
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 // const baseURL = process.env.BASE_URL;
 const baseURL = "https://1hp4qvie0k.execute-api.us-east-1.amazonaws.com/production";
 let testing_img = false;
+
+const testScenes = [
+        "The 3-head creepy creature attacked the small American village with no mercy. Everyone was running for their lives, but nobody could escape {monster growl}. People were screaming for help, but no one could hear them {male scream}. Everyone was so scared, their hearts were beating like crazy {heartbeat}. In a matter of minutes, the creature ate everyone in the village {glass smash}.",
+      "The survivors were left in shock and disbelief. They were too afraid to go back, so they just stayed and watched from a distance as the creature was eating their loved ones {church bell}. It was a nightmare that seemed to last forever {squeak}.",
+      "The creature finally left the village, leaving behind a trail of destruction and despair {thunder}. The villagers will never forget the terror they experienced, and the dark night will always haunt their dreams {wind}.",
+
+
+    ]
 
 function StandardImageList({images, handleChosen, chosen}) {
   let rowImages = []
@@ -67,14 +70,8 @@ function App() {
   const [body, setBody] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
-  const [scenes, setScenes] = useState([]);
-  //[
-  //     "The 3-head creepy creature attacked the small American village with no mercy. Everyone was running for their lives, but nobody could escape {monster growl}. People were screaming for help, but no one could hear them {male scream}. Everyone was so scared, their hearts were beating like crazy {heartbeat}. In a matter of minutes, the creature ate everyone in the village {glass smash}.",
-  //   "The survivors were left in shock and disbelief. They were too afraid to go back, so they just stayed and watched from a distance as the creature was eating their loved ones {church bell}. It was a nightmare that seemed to last forever {squeak}.",
-  //   "The creature finally left the village, leaving behind a trail of destruction and despair {thunder}. The villagers will never forget the terror they experienced, and the dark night will always haunt their dreams {wind}.",
-  //
-  //
-  // ]
+  const [scenes, setScenes] = useState(testScenes);
+
   const [chosen, setChosen] = useState([
       [1, 0],
         [1, 0],
@@ -240,7 +237,6 @@ function App() {
 
   return (
     <Box className='App'>
-      <h1 className='header'>Storybook: The simplest way to make beautiful story videos</h1>
       <Grid
           container
           spacing={{xs: 0, sm: 2, md: 2}}
@@ -248,7 +244,28 @@ function App() {
           justifyContent="center"
       >
         <Grid paddingX={2} container alignItems="center" justifyContent="center" direction="column" item
-              xs={12} sm={12} md={12}>
+              xs={12} sm={12} md={12}
+              maxWidth={{xs: 600, sm: 600, md: 600}}
+        >
+          <Typography
+              align="center"
+              variant="h2"
+              gutterBottom
+              sx={{marginBottom: 2}}
+          >
+            Storybook
+          </Typography>
+
+
+          <Typography
+              align="center"
+              sx={{marginBottom: 5}}
+              variant="h4"
+              gutterBottom
+          >
+            The simplest way to make beautiful story videos
+          </Typography>
+
           <TextField
               sx={{marginY: 1, minWidth: 200}}
               label="What the story is about?"
@@ -258,48 +275,102 @@ function App() {
               multiline
               value={body}
               onChange={(e) => setBody(e.target.value)}></TextField>
+
           <Button
               variant="contained"
-              sx={{backgroundColor: '#000', color: '#fff', marginY: 1, minWidth: 200}}
+              sx={{
+                backgroundColor: '#ffc400',
+                ":hover": {
+                  backgroundColor: '#ffc400',
+                },
+                color: '#000000',
+                marginY: 1,
+                minWidth: 200
+              }}
               onClick={() => getStory()}>
             Generate Script
           </Button>
         </Grid>
       </Grid>
-      <Box className='container'>
-        {loading && scenes.length === 0 ? (
-          <div className='inner-box'>
-            <Lottie animationData={wizardAnimation} loop={true} />
-            <p className='text'>Loading...</p>
-          </div>
-        ) : (
-          <div className='inner-box'>
-            {scenes.map((scene, index) => (
-              <p className='scene' key={index}>
-                {scene}
-              </p>
-            ))}
-          </div>
-        )}
-        {}
-      </Box>
+
+      <Grid
+          direction="column" item xs={4}
+          display="flex"
+          flexDirection="row"
+          justifyContent='center'
+      >
+            <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                display='flex'
+            >
+                      {loading && scenes.length === 0 ? (
+                        <Box className='inner-box'>
+                          <Lottie animationData={wizardAnimation} loop={true} />
+                          <p className='text'>Loading...</p>
+                        </Box>
+                      ) : (
+                          <Box sx={{ width: '100%', maxWidth: 500 }}>
+
+                          {scenes.map((scene, index) => (
+                              <Typography
+                                  align="left"
+                                sx={{marginY: 5}}
+                                  variant="body1" gutterBottom key={index}>
+                                {scene}
+                              </Typography>
+                          ))}
+                        </Box>
+                      )}
+            </Grid>
+      </Grid>
 
       {scenes.length > 0 &&
           <Button
               variant="contained"
-              sx={{backgroundColor: '#000', color: '#fff', marginY: 1, minWidth: 200}}
+              sx={{
+                backgroundColor: '#ffc400',
+                ":hover": {
+                  backgroundColor: '#ffc400',
+                },
+                color: '#000000',
+                marginY: 1,
+                minWidth: 200
+              }}
               onClick={() => getImages()}>
             Generate images
           </Button>
       }
 
-      {loadingImages && <Lottie animationData={wizardAnimation} loop={true} />}
+      <Grid
+          direction="column" item xs={4}
+          display="flex"
+          flexDirection="row"
+          justifyContent='center'
+      >
+        <Grid paddingX={2} container alignItems="center" justifyContent="center" direction="column" item
+              xs={12} sm={12} md={12}
+              maxWidth={{xs: 600, sm: 600, md: 600}}
+        >
+        {loadingImages && <Lottie animationData={wizardAnimation} loop={true} />}
+        </Grid>
+      </Grid>
       {images ?
           <Box>
             <StandardImageList handleChosen={handleChosen} chosen={chosen} images={images} />
             <Button
                 variant="contained"
-                sx={{backgroundColor: '#000', color: '#fff', marginY: 1, minWidth: 200}}
+                sx={{
+                  backgroundColor: '#ffc400',
+                  ":hover": {
+                    backgroundColor: '#ffc400',
+                  },
+                  color: '#000000',
+                  marginY: 1,
+                  minWidth: 200
+                }}
                 onClick={() => handleGenerateVideo()}>
               Generate Video
             </Button>
@@ -307,9 +378,9 @@ function App() {
           : null}
 
 
-
       {/*{video ? <video src={video} width='750' height='500' controls></video> : null}*/}
       {video ? <a target="_blank" href={video} >Click here in several minutes to see the video</a> : null}
+
     </Box>
   );
 }
