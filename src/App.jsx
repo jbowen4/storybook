@@ -22,6 +22,8 @@ const testScenes = [
 
     ]
 
+const imagesInRow = 3
+
 function StandardImageList({images, handleChosen, chosen}) {
   let rowImages = []
   for(let setIndex in images) {
@@ -44,7 +46,7 @@ function StandardImageList({images, handleChosen, chosen}) {
   }
 
   return (
-      <ImageList cols={2} >
+      <ImageList cols={imagesInRow} >
         {rowImages ? rowImages.map((item) => {
               return <ImageListItem key={item.set + item.index}>
                 <img
@@ -168,7 +170,7 @@ function App() {
       console.log('scripts', scripts);
 
       let imageSets = []
-      for(let i = 0; i < 2; i++) {
+      for(let i = 0; i < imagesInRow; i++) {
         const res = await fetch(`${baseURL}/api/v1/images`, {
           headers: {
             Accept: 'application/json',
