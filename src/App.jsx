@@ -26,11 +26,13 @@ const imagesInRow = 3
 
 function StandardImageList({images, handleChosen, chosen}) {
   let rowImages = []
+  let imagesLength = 2
   for(let setIndex in images) {
     if (!images.hasOwnProperty(setIndex)) {
       continue
     }
 
+    imagesLength = images[setIndex].length
     let imageSet = images[setIndex]
     for(let index in imageSet) {
       if (!imageSet.hasOwnProperty(index)) {
@@ -46,7 +48,7 @@ function StandardImageList({images, handleChosen, chosen}) {
   }
 
   return (
-      <ImageList cols={imagesInRow} >
+      <ImageList cols={imagesLength} >
         {rowImages ? rowImages.map((item) => {
               return <ImageListItem key={item.set + item.index}>
                 <img
