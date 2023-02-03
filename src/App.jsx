@@ -215,22 +215,27 @@ function App() {
       return;
     }
     setLoading(true);
-    const res = await fetch(`${baseURL}/api/v1/script`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        text: body,
-      }),
-    });
+    try {
+      const res = await fetch(`${baseURL}/api/v1/script`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          text: body,
+        }),
+      });
 
-    const results = await res.json();
+      const results = await res.json();
 
-    setScenes(results['scenes']);
-    setLoading(false);
+      setScenes(results['scenes'] ? results['scenes'] : []);
+    } catch (e) {
+        console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
