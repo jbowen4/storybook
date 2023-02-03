@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.header {
+  font-size: 40px;
+}
+
+/* .container {
+  display: flex;
+  justify-content: space-around;
+  gap: 30px;
+  position: absolute;
+  left: 10px;
+  flex: 1 1 1 1;
+} */
+
+textarea {
+  background: transparent;
+  border: 0 none;
+  outline: none;
+  height: 500px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 30px;
+}
+
+button {
+  font-size: 20px;
+  padding: 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  width: fit-content;
+  outline: none;
+  border: none;
+  background-color: #343;
+}
+
+button:hover {
+  transform: scale(1.1, 1.1);
+}
+
+.inner-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 1 1;
+  flex-basis: 0;
+}
+
+.scene {
+  font-size: 30px;
+  text-align: left;
+}
+
+.scene p {
+  margin: 0;
+}
+
+.text {
+  font-size: 30px;
+}
