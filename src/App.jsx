@@ -72,7 +72,7 @@ function App() {
   const [body, setBody] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
-  const [scenes, setScenes] = useState(testScenes);
+  const [scenes, setScenes] = useState([]);
 
   const [chosen, setChosen] = useState([
       [1, 0],
