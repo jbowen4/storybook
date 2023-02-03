@@ -40,3 +40,13 @@
 .read-the-docs {
   color: #888;
 }
+
+.text-area {
+  border: 1px solid #ccc;
+}
+
+.generate-script-btn {
+    margin: 1em;
+  color: #fff;
+  background-color: #646cff;
+}
